@@ -1,0 +1,17 @@
+package environments
+
+import (
+	"{{.Repo}}/{{.Project}}/pkg/dao"
+	"{{.Repo}}/{{.Project}}/pkg/services"
+)
+
+type {{.Kind}}ServiceLocator func() services.{{.Kind}}Service
+
+func New{{.Kind}}ServiceLocator(env *Env) {{.Kind}}ServiceLocator {
+	return func() services.{{.Kind}}Service {
+		return services.New{{.Kind}}Service(
+			dao.New{{.Kind}}Dao(&env.Database.SessionFactory),
+			env.Services.Events(),
+		)
+	}
+}
